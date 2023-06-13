@@ -1,10 +1,9 @@
-name: Run Ansible Playbook
+name: Run Ansible Playbook to install PCP and display few metrics
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
