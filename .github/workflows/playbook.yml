@@ -1,0 +1,29 @@
+---
+- name: Install and start PCP
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Install PCP
+      become: yes
+      apt:
+        name: pcp
+        state: present
+
+    - name: Start pmcd service
+      become: yes
+      service:
+        name: pmcd
+        state: started
+
+    - name: Start pmie service
+      become: yes
+      service:
+        name: pmie
+        state: started
+
+    - name: Start pmlogger service
+      become: yes
+      service:
+        name: pmlogger
+        state: started
