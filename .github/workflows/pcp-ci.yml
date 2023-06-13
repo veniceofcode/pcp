@@ -19,5 +19,6 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: Run Ansible playbook
-        run: ansible-playbook .github/workflows/playbook.yml
+        run: ansible-playbook .github/workflows/pcp-playbook.yml
+.yml
 
