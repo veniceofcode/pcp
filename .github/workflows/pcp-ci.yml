@@ -1,4 +1,4 @@
-name: Run Ansible Playbook to install PCP and display few metrics
+name: Run Ansible Playbook to install Performance Co-Pilot and display few metrics
 on:
   push:
     branches:
