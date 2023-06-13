@@ -1,56 +1,90 @@
 ---
-- name: Install and start PCP
+- name: Run PCP commands
   hosts: localhost
   gather_facts: false
 
   tasks:
-    - name: Install PCP
-      become: yes
+    - name: Install pcp package
       apt:
         name: pcp
         state: present
 
     - name: Start pmcd service
-      become: yes
-      service:
-        name: pmcd
-        state: started
+      shell: invoke-rc.d pmcd start
+      register: pmcd_output
+
+    - name: Display pmcd output
+      debug:
+        var: pmcd_output.stdout_lines
 
     - name: Start pmie service
-      become: yes
-      service:
-        name: pmie
-        state: started
+      shell: invoke-rc.d pmie start
+      register: pmie_output
+
+    - name: Display pmie output
+      debug:
+        var: pmie_output.stdout_lines
 
     - name: Start pmlogger service
-      become: yes
-      service:
-        name: pmlogger
-        state: started
+      shell: invoke-rc.d pmlogger start
+      register: pmlogger_output
+
+    - name: Display pmlogger output
+      debug:
+        var: pmlogger_output.stdout_lines
+
     - name: Run pminfo command
-      become: true
-      command: pminfo
+      shell: pminfo
+      register: pminfo_output
+
+    - name: Display pminfo output
+      debug:
+        var: pminfo_output.stdout_lines
 
     - name: Run pmstat command
-      become: true
-      command: pmstat
+      shell: pmstat
+      register: pmstat_output
+
+    - name: Display pmstat output
+      debug:
+        var: pmstat_output.stdout_lines
 
     - name: Run pmrep command
-      become: true
-      command: pmrep -p -h surf kernel.all.load kernel.all.pswitch
+      shell: pmrep -p -h surf kernel.all.load kernel.all.pswitch
+      register: pmrep_output
+
+    - name: Display pmrep output
+      debug:
+        var: pmrep_output.stdout_lines
 
     - name: Run pmval command
-      become: true
-      command: pmval proc.nprocs
+      shell: pmval proc.nprocs
+      register: pmval_output
 
-    - name: Run pmval command with specific options
-      become: true
-      command: pmval -h dove -t 5sec -s 4 kernel.percpu.cpu.idle
+    - name: Display pmval output
+      debug:
+        var: pmval_output.stdout_lines
 
-    - name: Run pmval command with specific options
-      become: true
-      command: pmval -t 1min -i disk1 disk.dev.read
+    - name: Run pmval command with options
+      shell: pmval -h dove -t 5sec -s 4 kernel.percpu.cpu.idle
+      register: pmval_options_output
 
-    - name: Run pminfo command with specific option
-      become: true
-      command: pminfo -T mem.util.cached
+    - name: Display pmval command with options output
+      debug:
+        var: pmval_options_output.stdout_lines
+
+    - name: Run pmval command with additional options
+      shell: pmval -t 1min -i disk1 disk.dev.read
+      register: pmval_additional_options_output
+
+    - name: Display pmval command with additional options output
+      debug:
+        var: pmval_additional_options_output.stdout_lines
+
+    - name: Run pminfo command with options
+      shell: pminfo -T mem.util.cached
+      register: pminfo_options_output
+
+    - name: Display pminfo command with options output
+      debug:
+        var: pminfo_options_output.stdout_lines
