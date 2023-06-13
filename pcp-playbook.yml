@@ -2,6 +2,7 @@
 - name: Run PCP commands
   hosts: localhost
   gather_facts: false
+  become: yes
 
   tasks:
     - name: Install pcp package
